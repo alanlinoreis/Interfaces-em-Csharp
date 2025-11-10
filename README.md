@@ -9,6 +9,8 @@
 |-------------|--------------------|
 | **Alan Lino dos Reis** | *(a2724332)* |
 | **Pedro Lucas Reis** | *(a2716020)* |
+| **Pedro Gabriel Sepulveda Borgheti** | *(a2706059)* |
+
 
 ---
 
