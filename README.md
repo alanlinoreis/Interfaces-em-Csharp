@@ -12,7 +12,7 @@
 | **Pedro Gabriel Sepulveda Borgheti** | *(a2706059)* |
 
 
----
+---s
 
 ## 📁 Estrutura do Repositório
 
@@ -23,4 +23,4 @@ repo-raiz/
 └── src/
     └── fase-00-aquecimento/
         └── Fase-00.md
-```
+
