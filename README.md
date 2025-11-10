@@ -1,4 +1,4 @@
-# 🧱 Projeto — Seletor de Produtos por Preço e Qualidade  
+# 🧱 Projeto — Seletor de Produtos por Preço e Qualidade
 **Atividade: Tarefa por Fases — Interfaces em C#**
 
 ---
@@ -21,6 +21,8 @@ repo-raiz/
 │
 ├── README.md
 └── src/
-    └── fase-00-aquecimento/
-        └── Fase-00.md
+    ├── fase-00-aquecimento/
+    │   └── DESCRICAO.md
+    └── fase-01-heuristica/
+        └── DESCRICAO.md
 ```

@@ -8,6 +8,7 @@
   - **Modo Econômico:** sempre escolhe o produto mais barato.  
   - **Modo Premium:** escolhe produto de maior qualidade, desde que o preço não ultrapasse R$200 em relação ao mais barato.  
 - **Política:** usar “Modo Premium” quando o orçamento permitir pagar até R$200 a mais por melhor qualidade; caso contrário, usar “Modo Econômico”.
+- **Ríscos/Obersvação:** pode haver subjetividade na avaliação de “qualidade” e limitação em cenários com poucos dados confiáveis. 
 
 ---
 
@@ -18,3 +19,4 @@
   - **Fornecedor A:** preço mais baixo, entrega mais lenta.  
   - **Fornecedor B:** preço um pouco maior (até 10%), mas entrega mais rápida e confiável.  
 - **Política:** usar Fornecedor B em pedidos urgentes ou quando o prazo for crítico; caso contrário, usar Fornecedor A.
+- **Ríscos/Obersvação:** fornecedores mais rápidos podem ter disponibilidade variável e custos logísticos maiores.
