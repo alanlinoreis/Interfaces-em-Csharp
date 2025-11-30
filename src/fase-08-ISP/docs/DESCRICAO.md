@@ -1,213 +1,229 @@
+# 🧩 Fase 08 — ISP (Interface Segregation Principle)
 
-# 🧱 Projeto — Seletor de Produtos por Preço e Qualidade
-**Atividade: Tarefa por Fases — Interfaces em C#**
+Nesta fase evoluímos o projeto aplicando o **Princípio da Segregação de Interfaces (ISP)**, um dos 5 princípios do SOLID.  
+O objetivo é **eliminar interfaces grandes e genéricas**, dividindo-as em contratos menores e mais específicos.
 
----
-
-## 👥 Equipe
-
-| Integrante | RA / Identificação |
-|-------------|--------------------|
-| **Alan Lino dos Reis** | *(a2724332)* |
-| **Pedro Lucas Reis** | *(a2716020)* |
-| **Pedro Gabriel Sepulveda Borgheti** | *(a2706059)* |
+Esta fase mantém integralmente tudo que foi feito até a Fase 07  
+(seletores, serviços, arquivos JSON, testes), mas **divide o repositório em duas interfaces menores**.
 
 ---
 
-# 📁 Estrutura do Repositório (Atualizado até a Fase 08)
+# 🎯 Objetivo da Fase
+Aplicar o ISP separando o contrato de persistência em **dois contratos especializados**:
 
-```plaintext
-repo-raiz/
+- `IReadRepository<T, TId>` → somente leitura  
+- `IWriteRepository<T, TId>` → somente escrita  
+
+Antes, tínhamos apenas:
+
+```csharp
+IRepository<T,TId>  // grande e genérica
+```
+
+Agora, esse contrato é dividido para reduzir acoplamento.
+
+---
+
+# 🧱 Estrutura da Fase 08
+
+```
+src/fase-08-ISP/
 │
-├── README.md
-└── src/
-    ├── fase-00-aquecimento/
-    │   └── DESCRICAO.md
-    │
-    ├── fase-01-heuristica/
-    │   └── DESCRICAO.md
-    │
-    ├── fase-02-procedural/
-    │   └── Program.cs
-    │
-    ├── fase-03-oo-sem-interface/
-    │   ├── Program.cs
-    │   └── DESCRICAO.md
-    │
-    ├── fase-04-interface/
-    │   ├── domain.entities/
-    │   ├── domain.app/
-    │   ├── domain.tests/
-    │   └── DESCRICAO.md
-    │
-    ├── fase-05-Repository-In-Memory/
-    │   ├── Domain.Entities/
-    │   ├── Domain.App/
-    │   ├── Domain.Tests/
-    │   └── docs/
-    │       └── DESCRICAO.md
-    │
-    ├── fase-06-Repository-CSV/
-    │   ├── Domain.App/
-    │   │   ├── produtos.csv
-    │   │   └── Program.cs
-    │   │
-    │   ├── Domain.Entities/
-    │   │   ├── Models/
-    │   │   ├── Repository/
-    │   │   ├── Seletores/
-    │   │   └── Service/
-    │   │
-    │   ├── Domain.Tests/
-    │   │   ├── CsvProdutoRepositoryTests.cs
-    │   │   ├── ProdutoRepositoryTests.cs
-    │   │   ├── ProdutoServiceSelecaoTests.cs
-    │   │   ├── ProdutoServiceTests.cs
-    │   │   ├── SeletorEconomicoTests.cs
-    │   │   ├── SeletorFactoryTests.cs
-    │   │   ├── SeletorPremiumTests.cs
-    │   │   └── SeletorQualidadeTests.cs
-    │   │
-    │   └── docs/
-    │       └── DESCRICAO.md
-    │
-    ├── fase-07-Repository-Json/
-    │   ├── Domain.App/
-    │   │   ├── produtos.json
-    │   │   └── Program.cs
-    │   │
-    │   ├── Domain.Entities/
-    │   │   ├── Models/
-    │   │   ├── Repository/
-    │   │   ├── Seletores/
-    │   │   └── Service/
-    │   │
-    │   ├── Domain.Tests/
-    │   │   ├── JsonProdutoRepositoryTests.cs
-    │   │   ├── ProdutoRepositoryTests.cs
-    │   │   ├── ProdutoServiceSelecaoTests.cs
-    │   │   ├── ProdutoServiceTests.cs
-    │   │   ├── SeletorEconomicoTests.cs
-    │   │   ├── SeletorFactoryTests.cs
-    │   │   ├── SeletorPremiumTests.cs
-    │   │   └── SeletorQualidadeTests.cs
-    │   │
-    │   └── docs/
-    │       ├── DESCRICAO.md
-    │       ├── diagrama_arquitetura_fase7.png
-    │       ├── diagrama_fluxo_crud_fase7.png
-    │       └── diagrama_json_flow_fase7.png
-    │
-    ├── fase-08-ISP/
-        ├── Domain.App/
-        │   └── Program.cs
-        │
-        ├── Domain.Entities/
-        │   ├── Models/
-        │   ├── Repository/
-        │   │   ├── IReadRepository.cs
-        │   │   ├── IWriteRepository.cs
-        │   │   ├── IRepository.cs
-        │   │   ├── InMemoryRepository.cs
-        │   │   └── JsonProdutoRepository.cs
-        │   ├── Seletores/
-        │   └── Service/
-        │
-        ├── Domain.Tests/
-        │   ├── ProdutoServiceTests.cs
-        │   ├── ProdutoServiceSelecaoTests.cs
-        │   ├── (demais testes se mantêm)
-        │
-        └── docs/
-            └── DESCRICAO.md
+├── Domain.Entities/
+│   ├── Models/
+│   ├── Seletores/
+│   ├── Service/
+│   └── Repository/
+│       ├── IReadRepository.cs
+│       ├── IWriteRepository.cs
+│       ├── IRepository.cs
+│       ├── InMemoryRepository.cs
+│       └── JsonProdutoRepository.cs
+│
+├── Domain.App/
+│   └── Program.cs
+│
+└── Domain.Tests/
+    ├── ProdutoServiceTests.cs
+    ├── ProdutoServiceSelecaoTests.cs
+    └── (demais testes permanecem iguais)
 ```
 
 ---
 
-# 📜 Resumo das Fases
+# 🧠 Por que o ISP?
 
-## 🧩 Fase 00 — Aquecimento
-- Definição do domínio
-- Objetivo, contrato e peças alternáveis
+O problema do repositório anterior era que *todo método CRUD estava em uma única interface*:
 
-## 🧩 Fase 01 — Heurística Antes do Código
-- Mapa mental
-- Comparação procedural vs OO
+```
+Add
+Update
+Remove
+ListAll
+GetById
+```
 
-## 🧩 Fase 02 — Procedural
-- Tudo em Program.cs
-- Sem OO, sem interface
+Mas o sistema tem métodos que **não precisam saber escrever**, como:
 
-## 🧩 Fase 03 — OO Sem Interface
-- Herança
-- SeletorBase
-- Implementações concretas
+- Seletores  
+- ProdutoService.ExecutarSelecao  
+- Telas que só consultam dados  
 
-## 🧩 Fase 04 — Interface Plugável e Testável
-- ISeletorDeProduto
-- Factory
-- Testes independentes
-- Projetos separados
+Ou seja:
 
-## 🧩 Fase 05 — Repository InMemory
-- Contrato Repository
-- Implementação em memória
-- CRUD + testes
-
-## 🧩 Fase 06 — Repository CSV
-- Persistência real
-- Leitura/escrita CSV robusta
-- Testes com arquivos temporários
-- Program integrado
-
-## 🧩 Fase 07 — Repository JSON (System.Text.Json)
-- Nova implementação do repository
-- JSON indentado + camelCase
-- Arquivo produtos.json
-- Testes completos
-- Diagramas documentando a arquitetura
-
-## 🧩 Fase 08 — ISP (Interface Segregation Principle)
-- Divisão do repository em:
-  - `IReadRepository`
-  - `IWriteRepository`
-- Serviços separados por responsabilidade
-- Testes ajustados para usar interfaces segregadas
-- Program atualizado
-- Domínio permanece inalterado
+📌 *Um consumidor deveria depender apenas dos métodos que realmente usa.*
 
 ---
 
-# ▶️ Como executar o projeto
+# 📝 Novos Contratos Criados
 
-Entre na pasta da fase desejada:
+## 1️⃣ `IReadRepository<T, TId>`
 
+```csharp
+public interface IReadRepository<T, TId>
+{
+    T? GetById(TId id);
+    IReadOnlyList<T> ListAll();
+}
 ```
-src/fase-XX/Domain.App
-dotnet run
+
+## 2️⃣ `IWriteRepository<T, TId>`
+
+```csharp
+public interface IWriteRepository<T, TId>
+{
+    T Add(T entity);
+    bool Update(T entity);
+    bool Remove(TId id);
+}
+```
+
+## 3️⃣ `IRepository<T, TId>`
+
+Para manter compatibilidade com fases anteriores:
+
+```csharp
+public interface IRepository<T, TId> :
+    IReadRepository<T, TId>,
+    IWriteRepository<T, TId>
+{
+}
 ```
 
 ---
 
-# 🧪 Rodar Testes
+# 🔧 Ajustes no ProdutoService
 
-Entre na pasta:
+Antes:
 
+```csharp
+Criar(IRepository repo)
+Listar(IRepository repo)
+Atualizar(IRepository repo)
+Remover(IRepository repo)
+ExecutarSelecao(IRepository repo)
 ```
-src/fase-XX/Domain.Tests
-dotnet test
+
+Depois (ISP):
+
+```csharp
+Criar(IWriteRepository repo)
+Listar(IReadRepository repo)
+Atualizar(IWriteRepository repo)
+Remover(IWriteRepository repo)
+ExecutarSelecao(IReadRepository repo)
+```
+
+Agora cada método depende **somente do necessário**.
+
+---
+
+# 💾 Repositórios Concretos
+
+Tanto `InMemoryRepository` quanto `JsonProdutoRepository` implementam:
+
+✔ IReadRepository  
+✔ IWriteRepository  
+✔ IRepository (total)
+
+Nada muda neles — apenas passam a implementar as duas interfaces:
+
+```csharp
+public class JsonProdutoRepository :
+    IReadRepository<Produto,int>,
+    IWriteRepository<Produto,int>
 ```
 
 ---
 
-# ✔️ Conclusão
+# 🧪 Ajustes nos Testes
 
-O projeto evolui aumentando:
+Apenas **2 testes** precisaram ser modificados:
 
-- Abstração  
-- Reutilização  
-- Testabilidade  
-- Baixo acoplamento  
-- Clareza arquitetural  
+### ✔ ProdutoServiceTests.cs
 
-Com a Fase 08, entramos no mundo SOLID aplicando o ISP, preparando terreno para fases avançadas (injeção de dependência, banco de dados, DDD, etc.).
+Criado:
+
+```csharp
+IReadRepository leitor = repo;
+IWriteRepository escritor = repo;
+```
+
+### ✔ ProdutoServiceSelecaoTests.cs
+
+Agora usa apenas `IReadRepository`.
+
+Todos os outros testes continuam **idênticos**.
+
+---
+
+# 🖥 Ajustes no Program.cs
+
+Separação entre leitura e escrita:
+
+```csharp
+IReadRepository<Produto,int> leitor = repo;
+IWriteRepository<Produto,int> escritor = repo;
+```
+
+Seleção agora é:
+
+```csharp
+ProdutoService.ExecutarSelecao(leitor, "QUALIDADE");
+```
+
+---
+
+# 📊 Diagrama — Antes vs Depois
+
+```
+ANTES (Fase 07)
+--------------------------
+    IRepository
+   /    |     \
+Add   List   Update
+Remove  Get  etc.
+
+
+DEPOIS (Fase 08 — ISP)
+--------------------------
+
+ IReadRepository        IWriteRepository
+ -------------          ----------------
+ GetById                Add
+ ListAll                Update
+                        Remove
+
+ IRepository (herda dos dois)
+```
+
+---
+
+# ✔ Conclusão da Fase 08
+
+- O domínio agora usa **interfaces segregadas**  
+- O serviço depende apenas do que realmente precisa  
+- Traz mais clareza ao código  
+- Permite futura substituição (ex: repositórios somente leitura)  
+- Evita acoplamento desnecessário  
+- Todas as fases anteriores continuam funcionando  
