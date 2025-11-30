@@ -5,153 +5,157 @@
 
 ## 👥 Equipe
 
-| Integrante | RA / Identificação |
-|-------------|--------------------|
+| Integrante | RA |
+|-----------|----|
 | **Alan Lino dos Reis** | a2724332 |
 | **Pedro Lucas Reis** | a2716020 |
 | **Pedro Gabriel Sepulveda Borgheti** | a2706059 |
 
 ---
 
-# 📁 Estrutura do Repositório (Atualizado até a Fase 10)
+# 📁 Estrutura Geral do Repositório (Atualizada até a Fase 11)
+
+Cada fase possui:
+- sua própria aplicação (`Domain.App`)
+- suas próprias entidades (`Domain.Entities`)
+- seus próprios testes (`Domain.Tests`)
 
 ```
-repo-raiz/
+src/
+├── fase-00-*/
+├── fase-01-*/
+├── fase-02-*/
+├── fase-03-*/
+├── fase-04-*/
+├── fase-05-*/
+├── fase-06-*/
+├── fase-07-*/
+├── fase-08-*/
+├── fase-09-*/
+├── fase-10-*/
+└── fase-11-Mini-Projeto/
+    └── src/
+        ├── Domain.App/
+        ├── Domain.Entities/
+        └── Domain.Tests/
+```
+
+---
+
+# 📦 Conteúdo da Fase 11
+
+A seguir estão **todas as pastas e arquivos reais da fase 11**, conforme o projeto.
+
+---
+
+# 📁 Domain.Entities (Fase 11)
+
+```
+Domain.Entities/
+├── Contracts/
+│   ├── IAsyncReader.cs
+│   ├── IAsyncWriter.cs
+│   ├── IClock.cs
+│   └── IIdGenerator.cs
 │
-├── README.md
-├── docs/
-│   └── DESCRIÇÃO.md
-└── src/
-    ├── Domain.App/
-    │   ├── Program.cs
-    │   └── produtos.json
-    │
-    ├── Domain.Entities/
-    │   ├── Contracts/
-    │   │   ├── IAsyncReader.cs
-    │   │   ├── IAsyncWriter.cs
-    │   │   ├── IClock.cs
-    │   │   └── IIdGenerator.cs
-    │   │
-    │   ├── Doubles/
-    │   │   ├── ClockFake.cs
-    │   │   ├── ReaderFake.cs
-    │   │   └── WriterFake.cs
-    │   │
-    │   ├── Models/
-    │   │   └── Produto.cs
-    │   │
-    │   ├── Repository/
-    │   │   ├── InMemoryRepository.cs
-    │   │   ├── IReadRepository.cs
-    │   │   ├── IRepository.cs
-    │   │   ├── IWriteRepository.cs
-    │   │   └── JsonProdutoRepository.cs
-    │   │
-    │   ├── Seletores/
-    │   │   ├── ISeletorDeProduto.cs
-    │   │   ├── ModoSelecao.cs
-    │   │   ├── SeletorEconomico.cs
-    │   │   ├── SeletorPremium.cs
-    │   │   ├── SeletorQualidade.cs
-    │   │   └── SeletorFactory.cs
-    │   │
-    │   └── Service/
-    │       ├── ProdutoSelecaoService.cs
-    │       ├── ProdutoService.cs
-    │       └── PumpService.cs
-    │
-    └── Domain.Tests/
-        ├── JsonProdutoRepositoryTests.cs
-        ├── ProdutoRepositoryTests.cs
-        ├── ProdutoServiceSelecaoTests.cs
-        ├── ProdutoServiceTests.cs
-        ├── PumpServiceTests.cs
-        ├── SeletorEconomicoTests.cs
-        ├── SeletorFactoryTests.cs
-        ├── SeletorPremiumTests.cs
-        ├── SeletorQualidadeTests.cs
+├── Doubles/
+│   ├── ClockFake.cs
+│   ├── ReaderFake.cs
+│   └── WriterFake.cs
+│
+├── Models/
+│   └── Produto.cs
+│
+├── Repository/
+│   ├── InMemoryRepository.cs
+│   ├── IReadRepository.cs
+│   ├── IRepository.cs
+│   ├── IWriteRepository.cs
+│   └── JsonProdutoRepository.cs
+│
+├── Seletores/
+│   ├── ISeletorDeProduto.cs
+│   ├── ModoSelecao.cs
+│   ├── SeletorEconomico.cs
+│   ├── SeletorFactory.cs
+│   ├── SeletorPremium.cs
+│   └── SeletorQualidade.cs
+│
+└── Service/
+    ├── ProdutoSelecaoService.cs
+    ├── ProdutoService.cs
+    └── PumpService.cs
 ```
 
 ---
 
-# 📜 Resumo das Fases
+# 📁 Domain.App (Fase 11)
 
-## 🧩 Fase 00 — Aquecimento
-- Definição do domínio, objetivo e política do seletor de produtos.
+```
+Domain.App/
+├── Program.cs
+└── produtos.json
+```
 
-## 🧩 Fase 01 — Heurística Antes do Código
-- Análise de soluções (procedural, OO, OO com interface).
-- Identificação de acoplamentos e pontos fracos.
-
-## 🧩 Fase 02 — Procedural Mínimo
-- Implementação 100% procedural.
-- Tudo dentro de `Program.cs`.
-
-## 🧩 Fase 03 — OO Sem Interface
-- Polimorfismo via herança.
-- Cliente ainda acoplado às classes concretas.
-
-## 🧩 Fase 04 — Interface Plugável e Testável
-- Introdução de **ISeletorDeProduto**.
-- Testes independentes de implementação.
-- Projetos separados: Entities / App / Tests.
-
-## 🧩 Fase 05 — Repository InMemory
-- Introdução do contrato de `IRepository<T, TId>`.
-- Persistência simulada em memória.
-- Serviço atualizado (`ProdutoService`).
-- Testes completos de CRUD e seletores.
-
-## 🧩 Fase 06 — Repository CSV
-- Persistência real baseada em arquivo CSV.
-- Mesmo contrato de Repository da fase anterior.
-- Repositório concreto: `CsvProdutoRepository`.
-- Testes com arquivos temporários.
-
-## 🧩 Fase 07 — Repository JSON (System.Text.Json)
-- Repositório real com leitura e escrita JSON.
-- Arquivo `produtos.json` substitui o CSV.
-- Testes preservados, usando dublês de arquivo.
-
-## 🧩 Fase 08 — ISP (Interface Segregation Principle)
-- Repository é segregado em:
-  - `IReadRepository<T,TId>`
-  - `IWriteRepository<T,TId>`
-- `JsonProdutoRepository` implementa **ambas**.
-- Cliente passa a depender apenas da interface necessária.
-- Program reorganizado para leitura/escrita seletiva.
-
-## 🧩 Fase 09 — Dublês Avançados e Testes Assíncronos
-- Introdução das interfaces assíncronas:
-  - `IAsyncReader<T>`
-  - `IAsyncWriter<T>`
-  - `IClock`
-- Criação de dublês (`ReaderFake`, `WriterFake`, `ClockFake`).
-- Implementação do `PumpService` com retry, backoff, cancelamento e tempo injetável.
-
-## 🧩 Fase 10 — Cheiros e Antídotos
-- `ProdutoService` separado em CRUD + `ProdutoSelecaoService`.
-- Strings substituídas por enum `ModoSelecao`.
-- `SeletorFactory` usando `Dictionary<ModoSelecao, Func<ISeletorDeProduto>>`.
-- `PumpService` com cálculo de backoff extraído.
-- `Program.cs` usando enum e serviço de seleção.
+*Program.cs contém:*
+- Menu completo (CRUD, seleção, export, import, stream async)
+- Composição explícita (repo JSON → leitor/escritor)
+- Validações de entrada
 
 ---
 
-# ▶️ Como executar o projeto
+# 📁 Domain.Tests (Fase 11)
 
 ```
-cd src/Domain.App
+Domain.Tests/
+├── JsonProdutoRepositoryTests.cs
+├── ProdutoRepositoryTests.cs
+├── ProdutoServiceTests.cs
+├── ProdutoServiceFase11Tests.cs
+├── ProdutoServiceSelecaoTests.cs
+├── PumpServiceTests.cs
+├── SeletorEconomicoTests.cs
+├── SeletorPremiumTests.cs
+├── SeletorQualidadeTests.cs
+└── SeletorFactoryTests.cs
+```
+
+Esses testes cobrem:
+- Persistência JSON
+- Repositórios em memória
+- Seletores
+- ProdutoService completo (CRUD + filtros + import/export + async)
+- PumpService e dublês
+
+---
+
+# ▶️ Como executar qualquer fase
+
+```
+cd src/fase-XX-*/src/Domain.App
+dotnet run
+```
+
+Exemplo:
+
+```
+cd src/fase-11-Mini-Projeto/src/Domain.App
 dotnet run
 ```
 
 ---
 
-# 🧪 Como rodar os testes
+# 🧪 Como rodar testes de qualquer fase
 
 ```
-cd src/Domain.Tests
+cd src/fase-XX-*/src/Domain.Tests
+dotnet test
+```
+
+Exemplo:
+
+```
+cd src/fase-11-Mini-Projeto/src/Domain.Tests
 dotnet test
 ```
 
@@ -159,4 +163,15 @@ dotnet test
 
 # ✔️ Conclusão
 
-Com a Fase 10, o projeto está mais limpo, menos acoplado, sem strings mágicas e mais preparado para DI/DIP.
+O projeto evoluiu fase a fase aplicando:
+
+- Princípios de design (ISP, SRP, DIP)
+- Interfaces e polimorfismo
+- Repository Pattern (InMemory + JSON)
+- Testes unitários e doubles
+- Persistência real em JSON
+- Operações assíncronas com IAsyncEnumerable
+- Arquitetura modular e separada por fases
+
+A Fase 11 consolida tudo em um sistema completo, funcional, testável e bem documentado.
+
