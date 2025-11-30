@@ -13,7 +13,7 @@
 
 ---
 
-# 📁 Estrutura do Repositório (Atualizado até a Fase 06)
+# 📁 Estrutura do Repositório (Atualizado até a Fase 07)
 
 ```plaintext
 repo-raiz/
@@ -47,8 +47,32 @@ repo-raiz/
     │       └── DESCRICAO.md
     │
     ├── fase-06-Repository-CSV/
+    │   ├── Domain.App/
+    │   │   ├── produtos.csv
+    │   │   └── Program.cs
+    │   │
+    │   ├── Domain.Entities/
+    │   │   ├── Models/
+    │   │   ├── Repository/
+    │   │   ├── Seletores/
+    │   │   └── Service/
+    │   │
+    │   ├── Domain.Tests/
+    │   │   ├── CsvProdutoRepositoryTests.cs
+    │   │   ├── ProdutoRepositoryTests.cs
+    │   │   ├── ProdutoServiceSelecaoTests.cs
+    │   │   ├── ProdutoServiceTests.cs
+    │   │   ├── SeletorEconomicoTests.cs
+    │   │   ├── SeletorFactoryTests.cs
+    │   │   ├── SeletorPremiumTests.cs
+    │   │   └── SeletorQualidadeTests.cs
+    │   │
+    │   └── docs/
+    │       └── DESCRICAO.md
+    │
+    ├── fase-07-Repository-Json/
         ├── Domain.App/
-        │   ├── produtos.csv
+        │   ├── produtos.json
         │   └── Program.cs
         │
         ├── Domain.Entities/
@@ -58,7 +82,7 @@ repo-raiz/
         │   └── Service/
         │
         ├── Domain.Tests/
-        │   ├── CsvProdutoRepositoryTests.cs
+        │   ├── JsonProdutoRepositoryTests.cs
         │   ├── ProdutoRepositoryTests.cs
         │   ├── ProdutoServiceSelecaoTests.cs
         │   ├── ProdutoServiceTests.cs
@@ -68,7 +92,10 @@ repo-raiz/
         │   └── SeletorQualidadeTests.cs
         │
         └── docs/
-            └── DESCRICAO.md
+            ├── DESCRICAO.md
+            ├── diagrama_arquitetura_fase7.png
+            ├── diagrama_fluxo_crud_fase7.png
+            └── diagrama_json_flow_fase7.png
 ```
 
 ---
@@ -76,111 +103,78 @@ repo-raiz/
 # 📜 Resumo das Fases
 
 ## 🧩 Fase 00 — Aquecimento
-- Definição do domínio (seletor de produtos por preço e qualidade)
-- Objetivo, contrato, política e peças alternáveis
-
----
+- Definição do domínio
+- Objetivo, contrato e peças alternáveis
 
 ## 🧩 Fase 01 — Heurística Antes do Código
 - Mapa mental
-- Análise procedural vs OO sem interface vs OO com interface
-- Identificação de pontos de dor e sinais de alerta
+- Comparação procedural vs OO
 
----
-
-## 🧩 Fase 02 — Procedural Mínimo
-- Implementação totalmente procedural
-- Uso de if/switch
+## 🧩 Fase 02 — Procedural
+- Tudo em Program.cs
 - Sem OO, sem interface
-- Código centralizado em Program.cs
-
----
 
 ## 🧩 Fase 03 — OO Sem Interface
-- Classe base abstrata SeletorBase
-- Polimorfismo via herança
-- Implementações concretas:
-  - SeletorEconomico
-  - SeletorPremium
-  - SeletorQualidade
-- Cliente ainda acoplado às concretas
-
----
+- Herança
+- SeletorBase
+- Implementações concretas
 
 ## 🧩 Fase 04 — Interface Plugável e Testável
-- Separação do código em três projetos:
-  - domain.entities (negócio)
-  - domain.app (aplicação)
-  - domain.tests (testes)
-- Interface ISeletorDeProduto
-- Factory centralizada (SeletorFactory)
-- Testes completos para cada implementação
-- Cliente depende apenas da interface
-
----
+- ISeletorDeProduto
+- Factory
+- Testes independentes
+- Projetos separados
 
 ## 🧩 Fase 05 — Repository InMemory
-- Introdução do contrato de Repository
-- Implementação InMemory para simular persistência
-- Serviço de domínio atualizado para receber o repository
-- Testes completos do CRUD InMemory
-- Primeira fase com acoplamento mínimo entre domínio e armazenamento
+- Contrato Repository
+- Implementação em memória
+- CRUD + testes
 
----
+## 🧩 Fase 06 — Repository CSV
+- Persistência real
+- Leitura/escita CSV robusta
+- Testes com arquivos temporários
+- Program integrado
 
-## 🧩 Fase 06 — Repository CSV (Persistência Real em Arquivo)
-- Evolução do repositório: agora persistência em CSV
-- Mesmo contrato (`IRepository<T, TId>`)
-- Implementação completa do `CsvProdutoRepository`
-- Manipulação de arquivo com suporte a vírgulas e aspas
-- Program.cs com CRUD + seletores + leitura de CSV
-- Testes unitários usando arquivos temporários
-- Infraestrutura substituível: CSV e InMemory coexistem
-- Nenhuma alteração no domínio ou seletores — apenas na infraestrutura
+## 🧩 Fase 07 — Repository JSON (System.Text.Json)
+- Nova implementação do repository
+- JSON indentado + camelCase
+- Arquivo produtos.json
+- Testes completos
+- Diagramas documentando a arquitetura
+- Nenhuma mudança no domínio
 
 ---
 
 # ▶️ Como executar o projeto
 
-Na pasta:
+Entre na pasta da fase desejada:
 
 ```
-src/fase-06-Repository-CSV/Domain.App
-```
-
-Execute:
-
-```bash
+src/fase-*/Domain.App
 dotnet run
 ```
 
 ---
 
-# 🧪 Como rodar os testes
-
-Na pasta:
+# 🧪 Rodar Testes
+Entre na pasta da fase desejada:
 
 ```
-src/fase-06-Repository-CSV/Domain.Tests
-```
-
-Rode:
-
-```bash
+src/fase-*/Domain.Tests
 dotnet test
 ```
 
 ---
 
-# ✔️ Projeto em constante evolução
+# ✔️ Conclusão
 
-A cada fase o sistema ganha:
+O projeto evolui aumentando:
 
-- mais abstração  
-- menos acoplamento  
-- testes mais confiáveis  
-- camadas mais claras  
-- evolução natural para um backend real  
+- Abstração  
+- Reutilização  
+- Testabilidade  
+- Baixo acoplamento  
+- Facilidade de manutenção  
 
-A Fase 07 evoluirá o repositório para Banco de Dados ou múltiplas implementações coexistindo.
-
+E está pronto para as próximas fases (ex.: Banco de Dados, ISP, etc.).
