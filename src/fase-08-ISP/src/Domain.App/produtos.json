@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "nome": "Notebook Gamer",
+    "preco": 6500,
+    "qualidade": 95
+  },
+  {
+    "id": 2,
+    "nome": "Geladeira Frost Free",
+    "preco": 3200,
+    "qualidade": 80
+  },
+  {
+    "id": 3,
+    "nome": "Smartphone Pro Max",
+    "preco": 4500,
+    "qualidade": 90
+  },
+  {
+    "id": 4,
+    "nome": "Smart TV 4K",
+    "preco": 2800,
+    "qualidade": 85
+  }
+]
