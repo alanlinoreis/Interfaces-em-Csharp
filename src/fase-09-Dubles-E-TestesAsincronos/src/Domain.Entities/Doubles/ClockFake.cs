@@ -11,10 +11,9 @@ public class ClockFake : IClock
 
     public Task Delay(TimeSpan delay, CancellationToken ct = default)
     {
-        if (ct.IsCancellationRequested)
-            return Task.FromCanceled(ct);
-
+        ct.ThrowIfCancellationRequested();
         Now = Now.Add(delay);
         return Task.CompletedTask;
     }
+
 }

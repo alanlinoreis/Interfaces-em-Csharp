@@ -11,19 +11,17 @@ public class PumpService<T>
     private readonly IAsyncWriter<T> _writer;
     private readonly IClock _clock;
 
-    // parâmetros configuráveis
-    public int MaxRetries { get; init; } = 3; // número extra de tentativas (além da primeira)
+    public int MaxRetries { get; init; } = 3;
     public TimeSpan InitialBackoff { get; init; } = TimeSpan.FromMilliseconds(50);
-    public double BackoffFactor { get; init; } = 2.0; // exponencial
+    public double BackoffFactor { get; init; } = 2.0;
 
     public PumpService(IAsyncReader<T> reader, IAsyncWriter<T> writer, IClock clock)
     {
-        _reader = reader ?? throw new ArgumentNullException(nameof(reader));
-        _writer = writer ?? throw new ArgumentNullException(nameof(writer));
-        _clock = clock ?? throw new ArgumentNullException(nameof(clock));
+        _reader = reader;
+        _writer = writer;
+        _clock = clock;
     }
 
-    // RunAsync com retry/backoff e suporte a cancelamento
     public async Task RunAsync(CancellationToken ct = default)
     {
         await foreach (var item in _reader.ReadAllAsync(ct).WithCancellation(ct))
@@ -38,29 +36,26 @@ public class PumpService<T>
                 try
                 {
                     await _writer.WriteAsync(item, ct);
-                    break; // sucesso
+                    break;
                 }
-                catch (OperationCanceledException) // preserve cancelamento
+                catch (OperationCanceledException)
                 {
-                    throw;
+                    throw; // cancelamento legítimo
                 }
                 catch (Exception)
                 {
                     attempt++;
 
                     if (attempt > MaxRetries)
-                    {
-                        // excedeu tentativas → repropaga
                         throw;
-                    }
 
-                    // espera sem bloquear — usa relógio fake/real
+                    // DELAY — onde o cancelamento deve acontecer
                     await _clock.Delay(backoff, ct);
 
-                    // exponencial
                     backoff = TimeSpan.FromMilliseconds(backoff.TotalMilliseconds * BackoffFactor);
                 }
             }
         }
     }
+
 }

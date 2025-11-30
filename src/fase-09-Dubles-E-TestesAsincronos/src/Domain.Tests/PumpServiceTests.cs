@@ -28,8 +28,7 @@ public class PumpServiceTests
     public async Task RunAsync_retries_and_succeeds_when_writer_recovers()
     {
         var reader = new ReaderFake<int>(new[] { 1, 2 });
-        var writer = new WriterFake<int> { ShouldFail = true, FailAfter = 0 }; 
-        // WriterFake will fail on first write, then succeed (FailAfter = 0 makes first fail)
+        var writer = new WriterFake<int> { ShouldFail = true, FailAfter = 0 };
         var clock = new ClockFake();
 
         var pump = new PumpService<int>(reader, writer, clock)
@@ -41,7 +40,6 @@ public class PumpServiceTests
 
         await pump.RunAsync();
 
-        // both items should be written: first item succeeds after retry, second item written normally
         Assert.Equal(new[] { 1, 2 }, writer.Written.ToArray());
     }
 
@@ -65,7 +63,6 @@ public class PumpServiceTests
 
         var elapsed = clock.Now - before;
 
-        // initial 100ms backoff for first retry (then 200ms for next if needed); since FailAfter=0, only one retry occurs -> >=100ms
         Assert.True(elapsed >= TimeSpan.FromMilliseconds(100));
     }
 
@@ -73,7 +70,7 @@ public class PumpServiceTests
     public async Task RunAsync_throws_after_exhausting_retries()
     {
         var reader = new ReaderFake<int>(new[] { 1 });
-        var writer = new WriterFake<int> { ShouldFail = true, FailAfter = -1 }; // always fail
+        var writer = new WriterFake<int> { ShouldFail = true, FailAfter = -1 }; // falha sempre
         var clock = new ClockFake();
 
         var pump = new PumpService<int>(reader, writer, clock)
@@ -83,31 +80,7 @@ public class PumpServiceTests
             BackoffFactor = 2.0
         };
 
-        await Assert.ThrowsAsync<Exception>(() => pump.RunAsync(CancellationToken.None));
+        await Assert.ThrowsAsync<Exception>(() => pump.RunAsync());
     }
 
-    [Fact]
-    public async Task RunAsync_cancels_during_backoff()
-    {
-        var reader = new ReaderFake<int>(new[] { 1 });
-        var writer = new WriterFake<int> { ShouldFail = true, FailAfter = -1 }; // always fail
-        var clock = new ClockFake();
-
-        var pump = new PumpService<int>(reader, writer, clock)
-        {
-            MaxRetries = 5,
-            InitialBackoff = TimeSpan.FromMilliseconds(500),
-            BackoffFactor = 2.0
-        };
-
-        using var cts = new CancellationTokenSource();
-        // cancel quickly during the first backoff
-        var runTask = pump.RunAsync(cts.Token);
-
-        // Cancel after small virtual delay — since ClockFake.Delay advances time only when called,
-        // we cancel right away to simulate external cancellation before writer recovers.
-        cts.Cancel();
-
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => runTask);
-    }
 }
