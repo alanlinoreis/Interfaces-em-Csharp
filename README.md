@@ -13,7 +13,7 @@
 
 ---
 
-# 📁 Estrutura do Repositório
+# 📁 Estrutura do Repositório (Atualizado até a Fase 06)
 
 ```plaintext
 repo-raiz/
@@ -35,26 +35,40 @@ repo-raiz/
     │
     ├── fase-04-interface/
     │   ├── domain.entities/
-    │   │   ├── Produto.cs
-    │   │   ├── ISeletorDeProduto.cs
-    │   │   ├── SeletorEconomico.cs
-    │   │   ├── SeletorPremium.cs
-    │   │   ├── SeletorQualidade.cs
-    │   │   └── SeletorFactory.cs
-    │   │
     │   ├── domain.app/
-    │   │   └── Program.cs
-    │   │
     │   ├── domain.tests/
-    │   │   ├── SeletorEconomicoTests.cs
-    │   │   ├── SeletorPremiumTests.cs
-    │   │   ├── SeletorQualidadeTests.cs
-    │   │   └── SeletorFactoryTests.cs
-    │   │
     │   └── DESCRICAO.md
     │
-    ├── fase-05-repository-inmemory/
-    │   └── DESCRICAO.md
+    ├── fase-05-Repository-In-Memory/
+    │   ├── Domain.Entities/
+    │   ├── Domain.App/
+    │   ├── Domain.Tests/
+    │   └── docs/
+    │       └── DESCRICAO.md
+    │
+    ├── fase-06-Repository-CSV/
+        ├── Domain.App/
+        │   ├── produtos.csv
+        │   └── Program.cs
+        │
+        ├── Domain.Entities/
+        │   ├── Models/
+        │   ├── Repository/
+        │   ├── Seletores/
+        │   └── Service/
+        │
+        ├── Domain.Tests/
+        │   ├── CsvProdutoRepositoryTests.cs
+        │   ├── ProdutoRepositoryTests.cs
+        │   ├── ProdutoServiceSelecaoTests.cs
+        │   ├── ProdutoServiceTests.cs
+        │   ├── SeletorEconomicoTests.cs
+        │   ├── SeletorFactoryTests.cs
+        │   ├── SeletorPremiumTests.cs
+        │   └── SeletorQualidadeTests.cs
+        │
+        └── docs/
+            └── DESCRICAO.md
 ```
 
 ---
@@ -105,21 +119,36 @@ repo-raiz/
 
 ---
 
-## 🧩 Fase 05 — Repository InMemory (conceitual)
-- Documento explicativo (DESCRICAO.md) com:
-  - Diagrama
-  - Snippets de contrato de Repository
-  - Snippets da implementação InMemory
-  - Snippets de serviço + cliente usando o repo
-  - Snippets de testes unitários
-  - Política de ID documentada
-- Nenhum arquivo .cs criado nesta fase (somente documentação)
+## 🧩 Fase 05 — Repository InMemory
+- Introdução do contrato de Repository
+- Implementação InMemory para simular persistência
+- Serviço de domínio atualizado para receber o repository
+- Testes completos do CRUD InMemory
+- Primeira fase com acoplamento mínimo entre domínio e armazenamento
+
+---
+
+## 🧩 Fase 06 — Repository CSV (Persistência Real em Arquivo)
+- Evolução do repositório: agora persistência em CSV
+- Mesmo contrato (`IRepository<T, TId>`)
+- Implementação completa do `CsvProdutoRepository`
+- Manipulação de arquivo com suporte a vírgulas e aspas
+- Program.cs com CRUD + seletores + leitura de CSV
+- Testes unitários usando arquivos temporários
+- Infraestrutura substituível: CSV e InMemory coexistem
+- Nenhuma alteração no domínio ou seletores — apenas na infraestrutura
 
 ---
 
 # ▶️ Como executar o projeto
 
-Na pasta `domain.app`:
+Na pasta:
+
+```
+src/fase-06-Repository-CSV/Domain.App
+```
+
+Execute:
 
 ```bash
 dotnet run
@@ -129,10 +158,29 @@ dotnet run
 
 # 🧪 Como rodar os testes
 
-Na pasta `domain.tests`:
+Na pasta:
+
+```
+src/fase-06-Repository-CSV/Domain.Tests
+```
+
+Rode:
 
 ```bash
 dotnet test
 ```
 
 ---
+
+# ✔️ Projeto em constante evolução
+
+A cada fase o sistema ganha:
+
+- mais abstração  
+- menos acoplamento  
+- testes mais confiáveis  
+- camadas mais claras  
+- evolução natural para um backend real  
+
+A Fase 07 evoluirá o repositório para Banco de Dados ou múltiplas implementações coexistindo.
+
