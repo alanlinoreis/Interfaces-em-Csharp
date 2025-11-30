@@ -13,23 +13,64 @@
 
 ---
 
-# 📁 Estrutura do Repositório (Atualizado até a Fase 09)
+# 📁 Estrutura do Repositório (Atualizado até a Fase 10)
 
 ```
 repo-raiz/
 │
 ├── README.md
+├── docs/
+│   └── DESCRIÇÃO.md
 └── src/
-    ├── fase-00-aquecimento/
-    ├── fase-01-heuristica/
-    ├── fase-02-procedural/
-    ├── fase-03-oo-sem-interface/
-    ├── fase-04-interface/
-    ├── fase-05-Repository-In-Memory/
-    ├── fase-06-Repository-CSV/
-    ├── fase-07-Repository-Json/
-    ├── fase-08-ISP/
-    └── fase-09-Dubles-Async/
+    ├── Domain.App/
+    │   ├── Program.cs
+    │   └── produtos.json
+    │
+    ├── Domain.Entities/
+    │   ├── Contracts/
+    │   │   ├── IAsyncReader.cs
+    │   │   ├── IAsyncWriter.cs
+    │   │   ├── IClock.cs
+    │   │   └── IIdGenerator.cs
+    │   │
+    │   ├── Doubles/
+    │   │   ├── ClockFake.cs
+    │   │   ├── ReaderFake.cs
+    │   │   └── WriterFake.cs
+    │   │
+    │   ├── Models/
+    │   │   └── Produto.cs
+    │   │
+    │   ├── Repository/
+    │   │   ├── InMemoryRepository.cs
+    │   │   ├── IReadRepository.cs
+    │   │   ├── IRepository.cs
+    │   │   ├── IWriteRepository.cs
+    │   │   └── JsonProdutoRepository.cs
+    │   │
+    │   ├── Seletores/
+    │   │   ├── ISeletorDeProduto.cs
+    │   │   ├── ModoSelecao.cs
+    │   │   ├── SeletorEconomico.cs
+    │   │   ├── SeletorPremium.cs
+    │   │   ├── SeletorQualidade.cs
+    │   │   └── SeletorFactory.cs
+    │   │
+    │   └── Service/
+    │       ├── ProdutoSelecaoService.cs
+    │       ├── ProdutoService.cs
+    │       └── PumpService.cs
+    │
+    └── Domain.Tests/
+        ├── JsonProdutoRepositoryTests.cs
+        ├── ProdutoRepositoryTests.cs
+        ├── ProdutoServiceSelecaoTests.cs
+        ├── ProdutoServiceTests.cs
+        ├── PumpServiceTests.cs
+        ├── SeletorEconomicoTests.cs
+        ├── SeletorFactoryTests.cs
+        ├── SeletorPremiumTests.cs
+        ├── SeletorQualidadeTests.cs
 ```
 
 ---
@@ -81,43 +122,27 @@ repo-raiz/
 - Cliente passa a depender apenas da interface necessária.
 - Program reorganizado para leitura/escrita seletiva.
 
-## 🧩 Fase 09 — **Dublês Avançados e Testes Assíncronos**
-Nesta fase, três grandes evoluções:
+## 🧩 Fase 09 — Dublês Avançados e Testes Assíncronos
+- Introdução das interfaces assíncronas:
+  - `IAsyncReader<T>`
+  - `IAsyncWriter<T>`
+  - `IClock`
+- Criação de dublês (`ReaderFake`, `WriterFake`, `ClockFake`).
+- Implementação do `PumpService` com retry, backoff, cancelamento e tempo injetável.
 
-### ✔️ 1. **API Assíncrona**
-Novos contratos:
-- `IAsyncReader<T>`
-- `IAsyncWriter<T>`
-- `IClock`
-
-### ✔️ 2. **Dublês (Fakes) para Testes**
-- `ReaderFake<T>` → gera itens assíncronos.
-- `WriterFake<T>` → simula falhas configuráveis.
-- `ClockFake` → avança tempo virtual para testar retry/backoff.
-
-### ✔️ 3. **PumpService**
-Novo serviço responsável por:
-- consumir itens de um leitor assíncrono;
-- escrever usando um writer assíncrono;
-- aplicar retry configurável;
-- aplicar backoff exponencial;
-- honrar cancelamento (`CancellationToken`);
-- usar relógio injetável (fake/real).
-
-Testes cobrem:
-- retry e recuperação;
-- cálculo de backoff exponencial;
-- cancelamento no meio do processo;
-- escrita correta dos itens.
+## 🧩 Fase 10 — Cheiros e Antídotos
+- `ProdutoService` separado em CRUD + `ProdutoSelecaoService`.
+- Strings substituídas por enum `ModoSelecao`.
+- `SeletorFactory` usando `Dictionary<ModoSelecao, Func<ISeletorDeProduto>>`.
+- `PumpService` com cálculo de backoff extraído.
+- `Program.cs` usando enum e serviço de seleção.
 
 ---
 
 # ▶️ Como executar o projeto
 
-Escolha a fase:
-
 ```
-cd src/fase-*/Domain.App
+cd src/Domain.App
 dotnet run
 ```
 
@@ -126,7 +151,7 @@ dotnet run
 # 🧪 Como rodar os testes
 
 ```
-cd src/fase-*/Domain.Tests
+cd src/Domain.Tests
 dotnet test
 ```
 
@@ -134,14 +159,4 @@ dotnet test
 
 # ✔️ Conclusão
 
-Até a Fase 09, o projeto evoluiu de um simples procedural para um ecossistema:
-
-- orientado a contratos;
-- desacoplado;
-- testável;
-- com infraestrutura substituível;
-- com dublês avançados;
-- com operações assíncronas;
-- pronto para um backend real (Fase 10).
-
-A jornada demonstra **como projetos reais evoluem** através de camadas, princípios SOLID e testes consistentes.
+Com a Fase 10, o projeto está mais limpo, menos acoplado, sem strings mágicas e mais preparado para DI/DIP.
