@@ -14,14 +14,14 @@
 
 ---
 
-# 📁 Estrutura Geral do Repositório (Atualizada até a Fase 12)
+# 📁 Estrutura Geral do Repositório
 
 Cada fase possui:
 
 * sua própria aplicação (`Domain.App`)
 * suas próprias entidades (`Domain.Entities`)
 * seus próprios testes (`Domain.Tests`)
-* **(NOVO na Fase 12)** uma camada de dados (`Domain.Data`) para banco SQLite
+* uma camada de dados (`Domain.Data`) para banco SQLite
 
 ```
 src/
@@ -47,19 +47,7 @@ src/
 
 ---
 
-# 📦 Conteúdo da Fase 12
-
-A Fase 12 evolui a Fase 11 adicionando:
-
-* ✅ Persistência em **SQLite com Entity Framework Core**
-* ✅ Nova camada `Domain.Data`
-* ✅ Factory de repositório para alternar entre JSON e SQLite
-* ✅ Testes de integração do SQLite
-* ✅ Manutenção total da arquitetura limpa
-
----
-
-# 📁 Domain.Entities (Fase 12)
+# 📁 Domain.Entities
 
 ```
 Domain.Entities/
@@ -100,7 +88,7 @@ Domain.Entities/
 
 ---
 
-# 📁 Domain.Data (Fase 12 — NOVO)
+# 📁 Domain.Data
 
 ```
 Domain.Data/
@@ -130,7 +118,7 @@ Domain.Data/
 
 ---
 
-# 📁 Domain.App (Fase 12)
+# 📁 Domain.App
 
 ```
 Domain.App/
@@ -155,7 +143,7 @@ Domain.App/
 
 ---
 
-# 📁 Domain.Tests (Fase 12)
+# 📁 Domain.Tests
 
 ```
 Domain.Tests/
@@ -172,25 +160,12 @@ Domain.Tests/
 └── SqliteProdutoRepositoryTests.cs   ← NOVO
 ```
 
-### Testes adicionados na Fase 12:
-
-* Testes de integração do SQLite:
-
-  * `Add`
-  * `ListAll`
-  * `GetById`
-  * `Update`
-  * `Remove`
-  * Verificação da criação automática do banco
-
----
-
-# ▶️ Como executar a Fase 12
+# ▶️ Como executar as Fases
 
 ### Usando SQLite (padrão):
 
 ```
-cd src/fase-12-Projeto-Com-BD/src/Domain.App
+cd src/fase-xx-*/src/Domain.App
 dotnet run
 ```
 
@@ -202,16 +177,16 @@ dotnet run -- --json
 
 ---
 
-# 🧪 Como rodar os testes da Fase 12
+# 🧪 Como rodar os testes
 
 ```
-cd src/fase-12-Projeto-Com-BD/src/Domain.Tests
+cd src/fase-xx-*/src/Domain.Tests
 dotnet test
 ```
 
 ---
 
-# ✔️ Conclusão da Fase 12
+# ✔️ Conclusão
 
 A Fase 12 consolida totalmente o projeto com:
 
