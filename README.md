@@ -1,24 +1,27 @@
 # 🧱 Projeto — Seletor de Produtos por Preço e Qualidade
+
 **Atividade: Tarefa por Fases — Interfaces em C#**
 
 ---
 
 ## 👥 Equipe
 
-| Integrante | RA |
-|-----------|----|
-| **Alan Lino dos Reis** | a2724332 |
-| **Pedro Lucas Reis** | a2716020 |
+| Integrante                           | RA       |
+| ------------------------------------ | -------- |
+| **Alan Lino dos Reis**               | a2724332 |
+| **Pedro Lucas Reis**                 | a2716020 |
 | **Pedro Gabriel Sepulveda Borgheti** | a2706059 |
 
 ---
 
-# 📁 Estrutura Geral do Repositório (Atualizada até a Fase 11)
+# 📁 Estrutura Geral do Repositório
 
 Cada fase possui:
-- sua própria aplicação (`Domain.App`)
-- suas próprias entidades (`Domain.Entities`)
-- seus próprios testes (`Domain.Tests`)
+
+* sua própria aplicação (`Domain.App`)
+* suas próprias entidades (`Domain.Entities`)
+* seus próprios testes (`Domain.Tests`)
+* uma camada de dados (`Domain.Data`) para banco SQLite
 
 ```
 src/
@@ -33,22 +36,18 @@ src/
 ├── fase-08-*/
 ├── fase-09-*/
 ├── fase-10-*/
-└── fase-11-Mini-Projeto/
+├── fase-11-Mini-Projeto/
+└── fase-12-Projeto-Com-BD/
     └── src/
         ├── Domain.App/
         ├── Domain.Entities/
+        ├── Domain.Data/   ← NOVO
         └── Domain.Tests/
 ```
 
 ---
 
-# 📦 Conteúdo da Fase 11
-
-A seguir estão **todas as pastas e arquivos reais da fase 11**, conforme o projeto.
-
----
-
-# 📁 Domain.Entities (Fase 11)
+# 📁 Domain.Entities
 
 ```
 Domain.Entities/
@@ -89,22 +88,62 @@ Domain.Entities/
 
 ---
 
-# 📁 Domain.App (Fase 11)
+# 📁 Domain.Data
+
+```
+Domain.Data/
+├── CatalogoDbContext.cs
+├── SqliteProdutoRepository.cs
+└── SqliteRepositoryFactory.cs
+```
+
+### Responsabilidades:
+
+* `CatalogoDbContext`
+
+  * DbContext do Entity Framework Core
+  * Expõe `DbSet<Produto>`
+  * Configura mapeamento do Produto
+
+* `SqliteProdutoRepository`
+
+  * Implementa `IReadRepository<Produto,int>` e `IWriteRepository<Produto,int>`
+  * Executa CRUD real no SQLite
+
+* `SqliteRepositoryFactory`
+
+  * Cria o `DbContext`
+  * Garante criação automática do banco (`catalogo.db`)
+  * Retorna repositórios prontos para uso
+
+---
+
+# 📁 Domain.App
 
 ```
 Domain.App/
 ├── Program.cs
-└── produtos.json
+├── produtos.json
+└── catalogo.db   (gerado automaticamente)
 ```
 
-*Program.cs contém:*
-- Menu completo (CRUD, seleção, export, import, stream async)
-- Composição explícita (repo JSON → leitor/escritor)
-- Validações de entrada
+### Program.cs contém:
+
+* Menu completo:
+
+  * CRUD
+  * Seleção por enum
+  * Exportação / Importação JSON
+  * Stream assíncrono
+* Composição explícita de repositórios:
+
+  * `--json` → usa `JsonProdutoRepository`
+  * padrão → usa `SQLite + Entity Framework`
+* Seed automático no banco ou no JSON
 
 ---
 
-# 📁 Domain.Tests (Fase 11)
+# 📁 Domain.Tests
 
 ```
 Domain.Tests/
@@ -117,45 +156,31 @@ Domain.Tests/
 ├── SeletorEconomicoTests.cs
 ├── SeletorPremiumTests.cs
 ├── SeletorQualidadeTests.cs
-└── SeletorFactoryTests.cs
+├── SeletorFactoryTests.cs
+└── SqliteProdutoRepositoryTests.cs   ← NOVO
 ```
 
-Esses testes cobrem:
-- Persistência JSON
-- Repositórios em memória
-- Seletores
-- ProdutoService completo (CRUD + filtros + import/export + async)
-- PumpService e dublês
+# ▶️ Como executar as Fases
 
----
-
-# ▶️ Como executar qualquer fase
+### Usando SQLite (padrão):
 
 ```
-cd src/fase-XX-*/src/Domain.App
+cd src/fase-xx-*/src/Domain.App
 dotnet run
 ```
 
-Exemplo:
+### Usando JSON:
 
 ```
-cd src/fase-11-Mini-Projeto/src/Domain.App
-dotnet run
+dotnet run -- --json
 ```
 
 ---
 
-# 🧪 Como rodar testes de qualquer fase
+# 🧪 Como rodar os testes
 
 ```
-cd src/fase-XX-*/src/Domain.Tests
-dotnet test
-```
-
-Exemplo:
-
-```
-cd src/fase-11-Mini-Projeto/src/Domain.Tests
+cd src/fase-xx-*/src/Domain.Tests
 dotnet test
 ```
 
@@ -163,15 +188,13 @@ dotnet test
 
 # ✔️ Conclusão
 
-O projeto evoluiu fase a fase aplicando:
+A Fase 12 consolida totalmente o projeto com:
 
-- Princípios de design (ISP, SRP, DIP)
-- Interfaces e polimorfismo
-- Repository Pattern (InMemory + JSON)
-- Testes unitários e doubles
-- Persistência real em JSON
-- Operações assíncronas com IAsyncEnumerable
-- Arquitetura modular e separada por fases
+* Arquitetura limpa em camadas
+* Contratos de repositório bem definidos
+* Persistência em JSON e SQLite
+* Entity Framework Core integrado corretamente
+* Testes unitários + testes de integração
+* Composição explícita no `Program.cs`
 
-A Fase 11 consolida tudo em um sistema completo, funcional, testável e bem documentado.
-
+O projeto está agora pronto para evoluir para APIs, interfaces gráficas ou troca de banco de dados (PostgreSQL, MySQL, etc.) sem alteração no domínio.
