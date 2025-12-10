@@ -21,6 +21,9 @@ Cada fase possui:
 * sua própria aplicação (`Domain.App`)
 * suas próprias entidades (`Domain.Entities`)
 * seus próprios testes (`Domain.Tests`)
+
+A fase 12 adicionou:
+
 * uma camada de dados (`Domain.Data`) para banco SQLite
 
 ```
