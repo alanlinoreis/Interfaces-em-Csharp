@@ -12,7 +12,7 @@ public class Program
 
         string path = "produtos.csv";
         var repo = new CsvProdutoRepository(path);
-
+// teste
         GarantirArquivoInicial(repo, path);
 
         ListarProdutos(repo);
