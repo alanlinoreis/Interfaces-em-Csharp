@@ -1,0 +1,38 @@
+[
+  {
+    "Id": 1,
+    "Nome": "Notebook Gamer",
+    "Preco": 6500.0,
+    "Qualidade": 95
+  },
+  {
+    "Id": 2,
+    "Nome": "Geladeira Frost Free",
+    "Preco": 3200.0,
+    "Qualidade": 80
+  },
+  {
+    "Id": 3,
+    "Nome": "Smartphone Pro Max",
+    "Preco": 4500.0,
+    "Qualidade": 90
+  },
+  {
+    "Id": 4,
+    "Nome": "Smart TV 4K",
+    "Preco": 2800.0,
+    "Qualidade": 85
+  },
+  {
+    "Id": 5,
+    "Nome": "Alan Lino dos Reis",
+    "Preco": 0.5,
+    "Qualidade": 100
+  },
+  {
+    "Id": 22,
+    "Nome": "ar condicionado samsung",
+    "Preco": 1850.0,
+    "Qualidade": 92
+  }
+]

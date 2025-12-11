@@ -1,11 +1,5 @@
 [
   {
-    "Id": 1,
-    "Nome": "Televis\u00E3o",
-    "Preco": 50,
-    "Qualidade": 5
-  },
-  {
     "Id": 2,
     "Nome": "VideoGame",
     "Preco": 2000,
@@ -22,5 +16,11 @@
     "Nome": "Pedro",
     "Preco": 50,
     "Qualidade": 5
+  },
+  {
+    "Id": 1,
+    "Nome": "Televisao",
+    "Preco": 4500,
+    "Qualidade": 95
   }
 ]

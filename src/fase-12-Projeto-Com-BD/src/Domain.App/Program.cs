@@ -66,7 +66,7 @@ public class Program
             switch (opcao)
             {
                 case "1": ListarProdutos(leitor); break;
-                case "2": AdicionarProduto(escritor); break;
+                case "2": AdicionarProduto(escritor, leitor); break;
                 case "3": BuscarPorNome(leitor); break;
                 case "4": AtualizarProduto(escritor, leitor); break;
                 case "5": RemoverProduto(escritor); break;
@@ -100,7 +100,7 @@ public class Program
     }
 
     // ============================================================
-    private static void AdicionarProduto(IWriteRepository<Produto, int> escritor)
+    private static void AdicionarProduto(IWriteRepository<Produto, int> escritor, IReadRepository<Produto, int> leitor)
     {
         Console.WriteLine("=== Adicionar Produto ===");
 
@@ -129,9 +129,14 @@ public class Program
             return;
         }
 
-        ProdutoService.Criar(escritor, new Produto(id, nome, preco, qualidade));
-
-        Console.WriteLine("✔ Produto adicionado!");
+        if(ProdutoService.Criar(escritor, leitor, new Produto(id, nome, preco, qualidade)) == null)
+        {
+            Console.WriteLine($"Produto com Id {id} já existe.");
+        }
+        else
+        {
+            Console.WriteLine("✔ Produto adicionado!");            
+        }
     }
 
     private static void BuscarPorNome(IReadRepository<Produto, int> leitor)
@@ -289,9 +294,9 @@ public class Program
         if (leitor.ListAll().Any())
             return;
 
-        ProdutoService.Criar(escritor, new Produto(1, "Notebook Gamer", 6500m, 95));
-        ProdutoService.Criar(escritor, new Produto(2, "Geladeira Frost Free", 3200m, 80));
-        ProdutoService.Criar(escritor, new Produto(3, "Smartphone Pro Max", 4500m, 90));
-        ProdutoService.Criar(escritor, new Produto(4, "Smart TV 4K", 2800m, 85));
+        ProdutoService.Criar(escritor, leitor, new Produto(1, "Notebook Gamer", 6500m, 95));
+        ProdutoService.Criar(escritor, leitor, new Produto(2, "Geladeira Frost Free", 3200m, 80));
+        ProdutoService.Criar(escritor, leitor, new Produto(3, "Smartphone Pro Max", 4500m, 90));
+        ProdutoService.Criar(escritor, leitor, new Produto(4, "Smart TV 4K", 2800m, 85));
     }
 }

@@ -7,8 +7,17 @@ namespace Domain.Entities.Service;
 public static class ProdutoService
 {
     // CRUD completo → exige escrita
-    public static Produto Criar(IWriteRepository<Produto, int> repo, Produto produto)
-        => repo.Add(produto);
+    public static Produto? Criar(IWriteRepository<Produto, int> repo, IReadRepository<Produto, int> repoaux, Produto produto)
+    {
+
+        if (repoaux.GetById(produto.Id) is not null)
+        {
+            return null;
+        }
+        else
+             return repo.Add(produto);
+        
+    } 
 
     public static IReadOnlyList<Produto> Listar(IReadRepository<Produto, int> repo)
         => repo.ListAll();
